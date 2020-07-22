@@ -1,3 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/07/22 02:33:19 by sucho             #+#    #+#             */
+/*   Updated: 2020/07/22 05:35:05 by sucho            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include <unistd.h>
+#include <stdio.h>
+#include <math.h>
+
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
    //define something for Windows (32-bit and 64-bit, this part is common)
    #ifdef _WIN64
@@ -33,3 +49,29 @@
 #else
 #   error "Unknown compiler"
 #endif
+
+typedef struct	s_player
+{
+	int			px;
+	int			py;
+
+	int			pdx;
+	int			pdy;
+	int			pa;
+
+}				t_player;
+
+typedef struct	s_window
+{
+	void		*mlx;
+	void		*win;
+
+	int			width;
+	int			height;
+	int			grid_count;
+
+	t_player	*player;
+
+}				t_window;
+
+int    draw_line_bres(t_window *window);
