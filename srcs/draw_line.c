@@ -11,25 +11,18 @@
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-int    draw_line_bres(t_window *window)
+int		draw_line_bres(t_window *window)
 {
-	int len = window->player-> px + 20;
-    int x = window->player->px;
-    int y = window->player->py;
-    int p;
 
-    p = 2 * window->player->pdx - window->player->pdy;
+}
 
-    while (x <= len)
-    {
-        mlx_pixel_put(window->mlx, window->win, x, y, 0xFFFFFF);
-        x++;
-        if (p < 0)
-            p = p + 2 * window->player->pdy;
-        else
-        {
-            p = p + 2 * window->player->pdx + 2 * window->player->pdy;
-            y++;
-        }
-    }
+int		draw_line_bres_low(t_window *window)
+{
+	int yi = 1;
+	
+	if (dy < 0)
+	{
+		yi = -1;
+		
+	}
 }

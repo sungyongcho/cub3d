@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 02:33:19 by sucho             #+#    #+#             */
-/*   Updated: 2020/07/22 05:35:05 by sucho            ###   ########.fr       */
+/*   Updated: 2020/07/24 03:12:33 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@
         # define KEY_A 0
         # define KEY_S 1
         # define KEY_D 2
+		# define KEY_LEFT_ARROW 123
+		# define KEY_RIGHT_ARROW 124
     #else
     #   error "Unknown Apple platform"
     #endif
@@ -57,7 +59,7 @@ typedef struct	s_player
 
 	int			pdx;
 	int			pdy;
-	int			pa;
+	double		pa;
 
 }				t_player;
 
@@ -74,4 +76,4 @@ typedef struct	s_window
 
 }				t_window;
 
-int    draw_line_bres(t_window *window);
+int	draw_line_bres(t_window *window);

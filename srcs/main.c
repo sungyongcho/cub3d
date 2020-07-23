@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 02:31:03 by sucho             #+#    #+#             */
-/*   Updated: 2020/07/22 06:33:56 by sucho            ###   ########.fr       */
+/*   Updated: 2020/07/24 02:40:55 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <stdio.h>
 #include <math.h>
 
-#define PI 3.1415926535
 
 void	ft_putchar(char c)
 {
@@ -30,8 +29,9 @@ int		init_player(t_window *window, int a, int b)
 	window->player->px = a;
 	window->player->py = b;
 	window->player->pa = 0;
-	window->player->pdx = window->player->px + cos(window->player->pa) *5;
-	window->player->pdy = window->player->py + sin(window->player->pa) *5;
+	window->player->pdx = cos(window->player->pa) *30;
+	window->player->pdy = sin(window->player->pa) *30;
+	return (1);
 }
 
 void	init_window_and_grid_num(t_window *window, int a, int b, int c)
@@ -42,32 +42,53 @@ void	init_window_and_grid_num(t_window *window, int a, int b, int c)
 }
 
 
-void		move_dot_left(t_window *window)
-{
-	window->player->pa -= 0.1;
-	if (window->player->pa < 0)
-		window->player->pa += 2 * PI;
-	window->player->pdx = window->player->px - cos(window->player->pa) * 5;
-	window->player->pdy = window->player->py - sin(window->player->pa) * 5;
-}
-
 void		move_dot_right(t_window *window)
 {
-	window->player->pa += 0.1;
-	if (window->player->pa > 2 * PI)
-		window->player->pa -= 2 * PI;
-	window->player->pdx = window->player->px +cos(window->player->pa) * 5;
-	window->player->pdy = window->player->py + sin(window->player->pa) * 5;
+	window->player->px += -window->player->pdy;
+	window->player->py += window->player->pdx;
 }
+void		move_dot_left(t_window *window)
+{
+	window->player->px += window->player->pdy;
+	window->player->py += -window->player->pdx;
+}
+void		move_dot_left_arrow(t_window *window)
+{
+	window->player->pa -= M_PI /180 * 15;
+	if (window->player->pa < 0)
+		window->player->pa += 2 * M_PI;
+	window->player->pdx = cos(window->player->pa)*30;
+	window->player->pdy = sin(window->player->pa)*30;
+	printf("px:%d\tpy:%d\tpdx:%d\tpdy:%d\t",window->player->px,window->player->py,window->player->pdx,window->player->pdy);
+}
+void		move_dot_right_arrow(t_window *window)
+{
+	window->player->pa += M_PI /180 * 15;
+	if (window->player->pa > 2 * M_PI)
+		window->player->pa = 0;
+	window->player->pdx = cos(window->player->pa)*30;
+	window->player->pdy = sin(window->player->pa)*30;
+	printf("px:%d\tpy:%d\tpdx:%d\tpdy:%d\t",window->player->px,window->player->py,window->player->pdx,window->player->pdy);
+}
+//void		move_dot_right(t_window *window)
+//{
+//	window->player->pa += M_PI /180 * 15;
+//	if (window->player->pa < 0)
+//		window->player->pa += 2 * M_PI;
+//	window->player->pdx = cos(window->player->pa) * 30;
+//	window->player->pdy  = sin(window->player->pa) * 30;
+//}
 
 void		move_dot_up(t_window *window)
 {
-	--window->player->py;
+	window->player->px+=window->player->pdx;
+	window->player->py+=window->player->pdy;
 }
 
 void		move_dot_down(t_window *window)
 {
-	++window->player->py;
+	window->player->px-=window->player->pdx;
+	window->player->py-=window->player->pdy;
 }
 
 int		draw_grid(t_window *window)
@@ -80,7 +101,7 @@ int		draw_grid(t_window *window)
 	{
 		draw_position = 0;
 		while (draw_position <= window->width){
-			mlx_pixel_put(window->mlx, window->win, draw_position, i * (window->height / window->grid_count),0xFFFFFF);
+			mlx_pixel_put(window->mlx, window->win, draw_position, i * (window->height / window->grid_count),0x00FFFF);
 			draw_position++;
 		}
 		i++;
@@ -90,7 +111,7 @@ int		draw_grid(t_window *window)
 	{
 		draw_position = 0;
 		while (draw_position <= window->width){
-			mlx_pixel_put(window->mlx, window->win, i * (window->width/ window->grid_count), draw_position,0xFFFFFF);
+			mlx_pixel_put(window->mlx, window->win, i * (window->width/ window->grid_count), draw_position,0x00FFFF);
 			draw_position++;
 		}
 		i++;
@@ -109,6 +130,10 @@ int		press_key_for_dot(int key, t_window *window)
 		move_dot_up(window);
 	else if (key == KEY_S)
 		move_dot_down(window);
+	else if (key == KEY_LEFT_ARROW)
+		move_dot_left_arrow(window);
+	else if (key == KEY_RIGHT_ARROW)
+		move_dot_right_arrow(window);
 	return (0);
 }
 
@@ -127,7 +152,6 @@ int	main()
 	init_window_and_grid_num(window, 500, 500, 10);
 	window->win = mlx_new_window(window->mlx, window->width, window->height, "ASTROWORLD IS WEAK come to suchoworld");
 	init_player(window, 250, 250);
-	mlx_pixel_put(window->mlx,window->win, window->player->px, window->player->py,0xFFFF00);
 	mlx_loop_hook(window->mlx, draw_grid, window);
 	mlx_loop_hook(window->mlx, draw_line_bres, window);
 	mlx_hook(window->win, 2, 1, press_key_for_dot, window);

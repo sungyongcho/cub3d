@@ -1,29 +1,9 @@
+#include "../includes/cub3d.h"
 #include "mlx.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <math.h>
-#define PI 3.1415926535
-
-typedef struct	s_window
-{
-	void	*mlx;
-	void	*win;
-
-	int		width;
-	int		height;
-	int		grid_count;
-
-	int		px;
-	int		py;
-
-	int		pdx;
-	int		pdy;
-
-	int		pa;
-
-}				t_window;
-
 
 void	ft_putchar(char c)
 {
@@ -48,7 +28,7 @@ void		move_dot_left(t_window *window)
 {
 	window->pa -= 0.1;
 	if (window->pa <0)
-		window->pa += 2 * PI;
+		window->pa += 2 * M_PI;
 	window->pdx = cos(window->pa) * 5;
 	window->pdy = sin(window->pa) * 5;
 	mlx_pixel_put(window->mlx, window->win, --window->px, window->py, 0xFFFF00);
@@ -58,8 +38,8 @@ void		move_dot_left(t_window *window)
 void		move_dot_right(t_window *window)
 {
 	window->pa += 0.1;
-	if (window->pa > 2 * PI)
-		window->pa -= 2 * PI;
+	if (window->pa > 2 * M_PI)
+		window->pa -= 2 * M_PI;
 	window->pdx = cos(window->pa) * 5;
 	window->pdy = sin(window->pa) * 5;
 	mlx_pixel_put(window->mlx, window->win, ++window->px, window->py, 0xFFFF00);
