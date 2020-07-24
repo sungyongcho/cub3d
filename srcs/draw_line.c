@@ -47,7 +47,7 @@ int		draw_line_bres_low(t_window *window, int x_0, int y_0,
     p = 2*dy - dx;
 	while (x_0 <= x_1)
 	{
-		mlx_pixel_put(window->mlx, window->win, x_0, y_0,0x00FFFF);
+		mlx_pixel_put(window->mlx, window->win, x_0, y_0,window->player->p_color);
 		if (p > 0)
 		{
 			y_0 = y_0 + yi;
@@ -78,7 +78,7 @@ int		draw_line_bres_hi(t_window *window, int x_0, int y_0,
     p = 2*dx - dy;
 	while (y_0 <= y_1)
 	{
-		mlx_pixel_put(window->mlx, window->win, x_0, y_0,0x00FFFF);
+		mlx_pixel_put(window->mlx, window->win, x_0, y_0,window->player->p_color);
 		if (p > 0)
 		{
 			x_0 = x_0 + xi;

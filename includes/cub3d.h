@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 02:33:19 by sucho             #+#    #+#             */
-/*   Updated: 2020/07/25 03:05:51 by sucho            ###   ########.fr       */
+/*   Updated: 2020/07/25 05:12:59 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct	s_player
 {
 	int			px;
 	int			py;
+	int			p_color;
 
 	int			pdx;
 	int			pdy;

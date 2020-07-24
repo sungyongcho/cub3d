@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 02:31:03 by sucho             #+#    #+#             */
-/*   Updated: 2020/07/25 03:25:32 by sucho            ###   ########.fr       */
+/*   Updated: 2020/07/25 05:13:56 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,17 @@ void	ft_putchar(char c)
 	write(1, &c, 1);
 }
 
-int		init_player(t_window *window, int a, int b)
+int		init_player(t_window *window, int a, int b, int color)
 {
 	if (!(window->player = (t_player *)malloc(sizeof(t_player) + 1)))
 		return (0);
 	window->player->px = a;
 	window->player->py = b;
+	window->player->p_color = color;
 	window->player->pa = 0;
 	window->player->pdx = cos(window->player->pa) *30;
 	window->player->pdy = sin(window->player->pa) *30;
+	draw_player(window);
 	return (1);
 }
 
@@ -45,11 +47,13 @@ void		move_dot_right(t_window *window)
 {
 	window->player->px += -window->player->pdy;
 	window->player->py += window->player->pdx;
+	draw_player(window);
 }
 void		move_dot_left(t_window *window)
 {
 	window->player->px += window->player->pdy;
 	window->player->py += -window->player->pdx;
+	draw_player(window);
 }
 void		move_dot_left_arrow(t_window *window)
 {
@@ -58,8 +62,7 @@ void		move_dot_left_arrow(t_window *window)
 		window->player->pa += 2 * M_PI;
 	window->player->pdx = cos(window->player->pa)*30;
 	window->player->pdy = sin(window->player->pa)*30;
-	printf("x:%d\ty:%d\tdx:%d\tdy:%d\t", window->player->px,window->player->py,
-								window->player->pdx, window->player->pdy);
+	draw_player(window);
 }
 void		move_dot_right_arrow(t_window *window)
 {
@@ -68,28 +71,21 @@ void		move_dot_right_arrow(t_window *window)
 		window->player->pa = 0;
 	window->player->pdx = cos(window->player->pa)*30;
 	window->player->pdy = sin(window->player->pa)*30;
-	printf("x:%d\ty:%d\tdx:%d\tdy:%d\t", window->player->px,window->player->py,
-								window->player->pdx, window->player->pdy);
+	draw_player(window);
 }
-//void		move_dot_right(t_window *window)
-//{
-//	window->player->pa += M_PI /180 * 15;
-//	if (window->player->pa < 0)
-//		window->player->pa += 2 * M_PI;
-//	window->player->pdx = cos(window->player->pa) * 30;
-//	window->player->pdy  = sin(window->player->pa) * 30;
-//}
 
 void		move_dot_up(t_window *window)
 {
 	window->player->px+=window->player->pdx;
 	window->player->py+=window->player->pdy;
+	draw_player(window);
 }
 
 void		move_dot_down(t_window *window)
 {
 	window->player->px-=window->player->pdx;
 	window->player->py-=window->player->pdy;
+	draw_player(window);
 }
 
 int		draw_grid(t_window *window)
@@ -152,10 +148,10 @@ int	main()
 	window->mlx = mlx_init();
 	init_window_and_grid_num(window, 500, 500, 10);
 	window->win = mlx_new_window(window->mlx, window->width, window->height, "ASTROWORLD IS WEAK come to suchoworld");
-	if (!init_player(window, 250, 250))
+	if (!init_player(window, 250, 250, 0x0000FF))
 		return (0);
 	mlx_loop_hook(window->mlx, draw_grid, window);
-	mlx_loop_hook(window->mlx, draw_player, window);
+	//mlx_loop_hook(window->mlx, draw_player, window);
 	mlx_hook(window->win, 2, 1, press_key_for_dot, window);
 	//mlx_hook(window->win, 3, 2, release_key_for_dot, window);
 	mlx_loop(window->mlx);
