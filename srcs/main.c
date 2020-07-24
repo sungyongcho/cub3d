@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 02:31:03 by sucho             #+#    #+#             */
-/*   Updated: 2020/07/24 02:40:55 by sucho            ###   ########.fr       */
+/*   Updated: 2020/07/25 01:06:23 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ void		move_dot_left_arrow(t_window *window)
 		window->player->pa += 2 * M_PI;
 	window->player->pdx = cos(window->player->pa)*30;
 	window->player->pdy = sin(window->player->pa)*30;
-	printf("px:%d\tpy:%d\tpdx:%d\tpdy:%d\t",window->player->px,window->player->py,window->player->pdx,window->player->pdy);
 }
 void		move_dot_right_arrow(t_window *window)
 {
@@ -68,7 +67,6 @@ void		move_dot_right_arrow(t_window *window)
 		window->player->pa = 0;
 	window->player->pdx = cos(window->player->pa)*30;
 	window->player->pdy = sin(window->player->pa)*30;
-	printf("px:%d\tpy:%d\tpdx:%d\tpdy:%d\t",window->player->px,window->player->py,window->player->pdx,window->player->pdy);
 }
 //void		move_dot_right(t_window *window)
 //{
@@ -153,7 +151,7 @@ int	main()
 	window->win = mlx_new_window(window->mlx, window->width, window->height, "ASTROWORLD IS WEAK come to suchoworld");
 	init_player(window, 250, 250);
 	mlx_loop_hook(window->mlx, draw_grid, window);
-	mlx_loop_hook(window->mlx, draw_line_bres, window);
+	//mlx_loop_hook(window->mlx, draw_line_bres, window);
 	mlx_hook(window->win, 2, 1, press_key_for_dot, window);
 	//mlx_hook(window->win, 3, 2, release_key_for_dot, window);
 	mlx_loop(window->mlx);

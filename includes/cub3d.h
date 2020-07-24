@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 02:33:19 by sucho             #+#    #+#             */
-/*   Updated: 2020/07/24 03:12:33 by sucho            ###   ########.fr       */
+/*   Updated: 2020/07/25 01:04:09 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@
     # define KEY_A 97
     # define KEY_S 115
     # define KEY_D 100
+	# define KEY_LEFT_ARROW 65361
+	# define KEY_RIGHT_ARROW 65363
 #elif __unix__ // all unices not caught above
     // Unix
 #elif defined(_POSIX_VERSION)
