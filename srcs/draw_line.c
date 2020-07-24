@@ -94,8 +94,8 @@ int		draw_line_bres(t_window *window, int x_0, int y_0, int x_1, int y_1)
 	int dx;
 	int dy;
 
-	dx = ((x_1 - x_0) > 0) ? (x_1 + x_0) : -(x_1 + x_0);
-	dy = ((y_1 - y_0) > 0) ? (y_1 + y_0) : -(y_1 + y_0);
+	dx = ((x_1 - x_0) > 0) ? (x_1 - x_0) : -(x_1 - x_0);
+	dy = ((y_1 - y_0) > 0) ? (y_1 - y_0) : -(y_1 - y_0);
 
 	if (dy < dx)
 	{
