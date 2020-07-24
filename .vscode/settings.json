@@ -6,7 +6,7 @@
    "terminal.external.osxExec":"iTerm2.app",
    "terminal.integrated.fontFamily":"MesloLGS NF",
    "python.jediEnabled": false,
-   "window.zoomLevel": -1,
+   "window.zoomLevel": -2,
    "42header.email":"sucho@student.42seoul.kr",
    "42header.username":"sucho",
    "editor.renderControlCharacters": true,
