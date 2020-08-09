@@ -6,14 +6,14 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 07:03:47 by sucho             #+#    #+#             */
-/*   Updated: 2020/08/09 14:32:42 by sucho            ###   ########.fr       */
+/*   Updated: 2020/08/09 14:43:41 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "../includes/cub3d.h"
 
-int	find_max_row(const char *map)
+int	find_max_row(const char **map)
 {
 	int	count;
 
@@ -26,7 +26,7 @@ int	find_max_row(const char *map)
 	return (count);
 }
 
-int	find_max_col(const char *map)
+int	find_max_col(const char **map)
 {
 	int	count;
 	int max;
