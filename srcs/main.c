@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 02:31:03 by sucho             #+#    #+#             */
-/*   Updated: 2020/08/09 14:08:49 by sucho            ###   ########.fr       */
+/*   Updated: 2020/08/09 14:47:15 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,16 +184,12 @@ void	draw_wall(t_window *window, char map[10][10])
 	int box_height;
 	box_width = window->width / window->column_count;
 	box_height = window->height/ window->row_count;
-	printf("width and height: %d\t%d\n",box_width,box_height);
 	while (r != 9)
 	{
-		printf("%d\t%d\t%c\n",c,r,map[r][c]);
 		if (map[r][c] == '0')
 			c++;
 		else if (map[r][c] == '1')
 		{
-			printf("hello fuck you2\n");
-			printf("x:%d\ty:%d\twidth:%d\theight:%d\n",(box_width * c), (box_height *r), box_width, box_height);
 			draw_box(window, r, c, box_width, box_height);
 			c++;
 		}
