@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 02:33:19 by sucho             #+#    #+#             */
-/*   Updated: 2020/08/09 14:09:14 by sucho            ###   ########.fr       */
+/*   Updated: 2020/08/10 18:21:43 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include <math.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include "./get_next_line/get_next_line.h"
+#include "./libft/libft.h"
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 	//define something for Windows (32-bit and 64-bit, this part is common)
@@ -87,6 +89,7 @@ typedef struct	s_window
 
 	int			width;
 	int			height;
+	char		**map;
 	int			row_count;
 	int			column_count;
 
@@ -95,4 +98,5 @@ typedef struct	s_window
 }				t_window;
 
 int		draw_line_bres(t_window *window, t_point *begin, t_point *end, int color);
-int				draw_player(t_window *window, int color);
+int		draw_player(t_window *window, int color);
+void	map_read(t_window *window, char *path);

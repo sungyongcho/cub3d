@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 02:31:03 by sucho             #+#    #+#             */
-/*   Updated: 2020/08/09 14:47:15 by sucho            ###   ########.fr       */
+/*   Updated: 2020/08/10 20:35:42 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,64 +37,93 @@ int		init_player(t_window *window, int a, int b, int color)
 	return (1);
 }
 
-void	init_window_and_grid_num(t_window *window, int a, int b, int c, int d)
+void	init_window(t_window *window, int a, int b)
 {
 	window->width = a;
 	window->height = b;
-	window->row_count = c;
-	window->column_count = d;
 }
 
+int			is_moving_to_wall(t_point *center)
+{
+	if ((0 <= center->x && center->x <=50) &&
+		(0 <= center->x && center->x <=50))
+		return (0);
+	return (1);
+}
 
 void		move_dot_right(t_window *window)
 {
-	draw_player(window, 000000);
-	window->player->center->x += -window->player->pdy;
-	window->player->center->y += window->player->pdx;
-	draw_player(window, window->player->p_color);
+	if ((0 <=window->player->center->x && window->player->center->x <= window->width)
+	&& (0 <=window->player->center->y && window->player->center->y <= window->height))
+	{
+		draw_player(window, 000000);
+		window->player->center->x += -window->player->pdy;
+		window->player->center->y += window->player->pdx;
+		draw_player(window, window->player->p_color);
+	}
 }
 void		move_dot_left(t_window *window)
 {
-	draw_player(window, 000000);
-	window->player->center->x += window->player->pdy;
-	window->player->center->y += -window->player->pdx;
-	draw_player(window, window->player->p_color);
+	if ((0 <=window->player->center->x && window->player->center->x <= window->width)
+	&& (0 <=window->player->center->y && window->player->center->y <= window->height))
+	{
+		draw_player(window, 000000);
+		window->player->center->x += window->player->pdy;
+		window->player->center->y += -window->player->pdx;
+		draw_player(window, window->player->p_color);
+	}
 }
 void		move_dot_left_arrow(t_window *window)
 {
-	draw_player(window, 000000);
-	window->player->pa -= 0.1;
-	if (window->player->pa < 0)
-		window->player->pa += 2 * M_PI;
-	window->player->pdx = cos(window->player->pa)*30;
-	window->player->pdy = sin(window->player->pa)*30;
-	draw_player(window, window->player->p_color);
+	if ((0 <=window->player->center->x && window->player->center->x <= window->width)
+	&& (0 <=window->player->center->y && window->player->center->y <= window->height))
+	{
+		draw_player(window, 000000);
+		window->player->pa -= 0.1;
+		if (window->player->pa < 0)
+			window->player->pa += 2 * M_PI;
+		window->player->pdx = cos(window->player->pa)*30;
+		window->player->pdy = sin(window->player->pa)*30;
+		draw_player(window, window->player->p_color);
+	}
 }
 void		move_dot_right_arrow(t_window *window)
 {
-	draw_player(window, 000000);
-	window->player->pa += 0.1;
-	if (window->player->pa > 2 * M_PI)
-		window->player->pa = 0;
-	window->player->pdx = cos(window->player->pa)*30;
-	window->player->pdy = sin(window->player->pa)*30;
-	draw_player(window, window->player->p_color);
+	if ((0 <=window->player->center->x && window->player->center->x <= window->width)
+	&& (0 <=window->player->center->y && window->player->center->y <= window->height))
+	{
+		draw_player(window, 000000);
+		window->player->pa += 0.1;
+		if (window->player->pa > 2 * M_PI)
+			window->player->pa = 0;
+		window->player->pdx = cos(window->player->pa)*30;
+		window->player->pdy = sin(window->player->pa)*30;
+		draw_player(window, window->player->p_color);
+	}
 }
 
 void		move_dot_up(t_window *window)
 {
-	draw_player(window, 000000);
-	window->player->center->x+=window->player->pdx;
-	window->player->center->y+=window->player->pdy;
-	draw_player(window, window->player->p_color);
+	if ((0 <=window->player->center->x && window->player->center->x <= window->width)
+	&& (0 <=window->player->center->y && window->player->center->y <= window->height))
+	{
+		draw_player(window, 000000);
+		window->player->center->x+=window->player->pdx;
+		window->player->center->y+=window->player->pdy;
+		draw_player(window, window->player->p_color);
+	}
 }
 
 void		move_dot_down(t_window *window)
 {
-	draw_player(window, 000000);
-	window->player->center->x-=window->player->pdx;
-	window->player->center->y-=window->player->pdy;
-	draw_player(window, window->player->p_color);
+	if ((0 <=window->player->center->x && window->player->center->x <= window->width)
+	&& (0 <=window->player->center->y && window->player->center->y <= window->height))
+	{
+		draw_player(window, 000000);
+		window->player->center->x-=window->player->pdx;
+		window->player->center->y-=window->player->pdy;
+		draw_player(window, window->player->p_color);
+	}
 }
 
 int		draw_grid(t_window *window)
@@ -173,7 +202,7 @@ void draw_box(t_window *window, int row_pos, int col_pos, int box_width, int box
 	}
 }
 
-void	draw_wall(t_window *window, char map[10][10])
+void	draw_wall(t_window *window)
 {
 	int r;
 	int	c;
@@ -184,16 +213,16 @@ void	draw_wall(t_window *window, char map[10][10])
 	int box_height;
 	box_width = window->width / window->column_count;
 	box_height = window->height/ window->row_count;
-	while (r != 9)
+	while (r < window->row_count)
 	{
-		if (map[r][c] == '0')
+		if (window->map[r][c] == '0')
 			c++;
-		else if (map[r][c] == '1')
+		else if (window->map[r][c] == '1')
 		{
 			draw_box(window, r, c, box_width, box_height);
 			c++;
 		}
-		if (c == 10)
+		if (c == window->column_count )
 		{
 			r++;
 			c = 0;
@@ -205,25 +234,18 @@ void	draw_wall(t_window *window, char map[10][10])
 int	main()
 {
 	t_window	*window;
-	char map_temp[10][10] = {{'1','0','0','0','1','0','0','0','0','0'},
-			{'0','0','0','0','0','0','0','0','0','0'},
-			{'0','0','1','0','0','0','0','1','0','0'},
-			{'0','0','0','0','0','0','0','0','0','0'},
-			{'0','0','0','0','0','0','0','0','0','0'},
-			{'0','0','0','1','0','0','0','0','0','0'},
-			{'0','0','0','0','1','0','0','0','0','0'},
-			{'0','0','0','0','0','0','0','0','0','0'},
-			{'0','0','1','0','0','0','0','1','0','0'},
-			{'0','0','0','0','0','0','0','0','0','0'}};
+
 
 	if (!(window = (t_window *)malloc(sizeof(t_window))))
 		return (0);
 	window->mlx = mlx_init();
-	init_window_and_grid_num(window, 500, 500, 10, 10);
+	init_window(window, 500, 500);
+	map_read(window, "srcs/map_test");
+	printf("%d\n",window->row_count);
 	window->win = mlx_new_window(window->mlx, window->width, window->height, "ASTROWORLD IS WEAK come to suchoworld");
 	if (!init_player(window, 250, 250, 0x0000FF))
 		return (0);
-	draw_wall(window, map_temp);
+	draw_wall(window);
 	mlx_loop_hook(window->mlx, draw_grid, window);
 	//mlx_loop_hook(window->mlx, draw_player, window);
 	mlx_hook(window->win, 2, 1, press_key_for_dot, window);
