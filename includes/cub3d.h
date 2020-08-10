@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 02:33:19 by sucho             #+#    #+#             */
-/*   Updated: 2020/08/10 18:21:43 by sucho            ###   ########.fr       */
+/*   Updated: 2020/08/10 22:46:15 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ typedef struct	s_window
 	char		**map;
 	int			row_count;
 	int			column_count;
+	int			total_unit;
 
 	t_player	*player;
 

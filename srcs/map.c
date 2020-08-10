@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 07:03:47 by sucho             #+#    #+#             */
-/*   Updated: 2020/08/10 22:36:42 by sucho            ###   ########.fr       */
+/*   Updated: 2020/08/10 22:50:30 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ void	map_read(t_window *window, char *path)
 	window->row_count = map_check_row_num(map_oneline);
 	printf("%d\n",window->row_count);
 	window->column_count = map_check_col_num(map_oneline);
+	window->total_unit = window->row_count * window->column_count;
 	window->map = ft_split(map_oneline, '\n');
 	map_convert_spaces(window->map, window->row_count, window->column_count);
 	int i =0;
