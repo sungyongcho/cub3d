@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 02:31:03 by sucho             #+#    #+#             */
-/*   Updated: 2020/08/10 20:35:42 by sucho            ###   ########.fr       */
+/*   Updated: 2020/08/10 22:36:09 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,7 @@ void	draw_wall(t_window *window)
 	box_height = window->height/ window->row_count;
 	while (r < window->row_count)
 	{
-		if (window->map[r][c] == '0')
+		if (window->map[r][c] == '0' || window->map[r][c] == ' ')
 			c++;
 		else if (window->map[r][c] == '1')
 		{

@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 07:03:47 by sucho             #+#    #+#             */
-/*   Updated: 2020/08/10 18:41:42 by sucho            ###   ########.fr       */
+/*   Updated: 2020/08/10 22:36:42 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ char 	*read_map_oneline(const char *path)
 {
 	char *map;
 	char *line;
-	int	temp;
 	int fd;
 
 	fd = open(path,O_RDONLY);
@@ -27,13 +26,6 @@ char 	*read_map_oneline(const char *path)
 		map = ft_strjoin(map,line);
 		map = ft_strjoin(map,"\n");
 		free(line);
-	}
-	temp = 0;
-	while (*(map + temp))
-	{
-		if (*(map+temp) == ' ')
-			*(map+temp) = '1';
-		temp++;
 	}
 	return (map);
 }
@@ -109,7 +101,7 @@ void	map_convert_spaces(char **map, int row_num, int col_num)
 				return ;
 			j = 0;
 			while (j < space_count)
-				*(space + j++) = '1';
+				*(space + j++) = ' ';
 			*(space + j)= '\0';
 			map[i] = ft_strjoin(map[i],space);
 		}
