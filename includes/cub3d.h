@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 02:33:19 by sucho             #+#    #+#             */
-/*   Updated: 2020/08/10 22:46:15 by sucho            ###   ########.fr       */
+/*   Updated: 2020/08/12 11:08:16 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,3 +101,4 @@ typedef struct	s_window
 int		draw_line_bres(t_window *window, t_point *begin, t_point *end, int color);
 int		draw_player(t_window *window, int color);
 void	map_read(t_window *window, char *path);
+void	map_check_player(t_window *window);

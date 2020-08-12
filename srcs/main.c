@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 02:31:03 by sucho             #+#    #+#             */
-/*   Updated: 2020/08/10 22:36:09 by sucho            ###   ########.fr       */
+/*   Updated: 2020/08/12 14:28:09 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,14 @@ void	ft_putchar(char c)
 	write(1, &c, 1);
 }
 
-int		init_player(t_window *window, int a, int b, int color)
+int		init_player(t_window *window,int color)
 {
 	if (!(window->player = (t_player *)malloc(sizeof(t_player))))
 		return (0);
 	if (!(window->player->center = (t_point *)malloc(sizeof(t_point))))
 		return (0);
-	window->player->center->x = a;
-	window->player->center->y = b;
+	map_check_player(window);
 	window->player->p_color = color;
-	window->player->pa = 0;
 	window->player->pdx = cos(window->player->pa) *30;
 	window->player->pdy = sin(window->player->pa) *30;
 	draw_player(window, window->player->p_color);
@@ -46,7 +44,7 @@ void	init_window(t_window *window, int a, int b)
 int			is_moving_to_wall(t_point *center)
 {
 	if ((0 <= center->x && center->x <=50) &&
-		(0 <= center->x && center->x <=50))
+		(0 <= center->y && center->y <=50))
 		return (0);
 	return (1);
 }
@@ -215,7 +213,7 @@ void	draw_wall(t_window *window)
 	box_height = window->height/ window->row_count;
 	while (r < window->row_count)
 	{
-		if (window->map[r][c] == '0' || window->map[r][c] == ' ')
+		if (ft_strchr("NEWS 0", window->map[r][c]))
 			c++;
 		else if (window->map[r][c] == '1')
 		{
@@ -241,9 +239,8 @@ int	main()
 	window->mlx = mlx_init();
 	init_window(window, 500, 500);
 	map_read(window, "srcs/map_test");
-	printf("%d\n",window->row_count);
 	window->win = mlx_new_window(window->mlx, window->width, window->height, "ASTROWORLD IS WEAK come to suchoworld");
-	if (!init_player(window, 250, 250, 0x0000FF))
+	if (!init_player(window, 0x0000FF))
 		return (0);
 	draw_wall(window);
 	mlx_loop_hook(window->mlx, draw_grid, window);

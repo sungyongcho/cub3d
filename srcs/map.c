@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 07:03:47 by sucho             #+#    #+#             */
-/*   Updated: 2020/08/10 22:50:30 by sucho            ###   ########.fr       */
+/*   Updated: 2020/08/12 14:07:45 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,13 +109,55 @@ void	map_convert_spaces(char **map, int row_num, int col_num)
 	}
 }
 
+void	map_check_player(t_window *window)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	window->player->center->x = - (window->width / (window->row_count)) / 2 ;
+	window->player->center->y = - (window->height / (window->column_count)) / 2;
+	while (i < window->row_count)
+	{
+		j = 0;
+		while (j < window->column_count)
+		{
+			if (ft_strchr("NEWS", (char) window->map[i][j]))
+			{
+				if ((char)window->map[i][j] == 'N')
+				{
+					window->player->pa = M_PI + (M_PI / 2);
+				}
+				if ((char)window->map[i][j] == 'E')
+				{
+					window->player->pa = M_PI;
+				}
+				if ((char)window->map[i][j] == 'W')
+				{
+					window->player->pa = 0;
+				}
+				if ((char)window->map[i][j] == 'S')
+				{
+					window->player->pa = M_PI / 2;
+				}
+				printf("x:%d\ty:%d\t\n", i ,j);
+				window->player->center->x += i * (window->width / (window->row_count));
+				window->player->center->y += j * (window->height / (window->column_count));
+				printf("init position\n");
+				printf("x:%d\ty:%d\t\n",window->player->center->x,window->player->center->y);
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
 void	map_read(t_window *window, char *path)
 {
 	char	*map_oneline;
 
 	map_oneline = read_map_oneline(path);
 	window->row_count = map_check_row_num(map_oneline);
-	printf("%d\n",window->row_count);
 	window->column_count = map_check_col_num(map_oneline);
 	window->total_unit = window->row_count * window->column_count;
 	window->map = ft_split(map_oneline, '\n');
