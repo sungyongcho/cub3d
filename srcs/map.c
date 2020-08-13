@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 07:03:47 by sucho             #+#    #+#             */
-/*   Updated: 2020/08/12 14:07:45 by sucho            ###   ########.fr       */
+/*   Updated: 2020/08/14 00:04:00 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,8 +141,8 @@ void	map_check_player(t_window *window)
 					window->player->pa = M_PI / 2;
 				}
 				printf("x:%d\ty:%d\t\n", i ,j);
-				window->player->center->x += i * (window->width / (window->row_count));
-				window->player->center->y += j * (window->height / (window->column_count));
+				window->player->center->x += (i + 1) * (window->width / (window->row_count));
+				window->player->center->y += (j + 1) * (window->height / (window->column_count));
 				printf("init position\n");
 				printf("x:%d\ty:%d\t\n",window->player->center->x,window->player->center->y);
 			}

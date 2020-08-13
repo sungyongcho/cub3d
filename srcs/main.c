@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 02:31:03 by sucho             #+#    #+#             */
-/*   Updated: 2020/08/12 14:28:09 by sucho            ###   ########.fr       */
+/*   Updated: 2020/08/14 00:11:35 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void		move_dot_right(t_window *window)
 		window->player->center->x += -window->player->pdy;
 		window->player->center->y += window->player->pdx;
 		draw_player(window, window->player->p_color);
+		drawRay3D(window);
 	}
 }
 void		move_dot_left(t_window *window)
@@ -69,6 +70,7 @@ void		move_dot_left(t_window *window)
 		window->player->center->x += window->player->pdy;
 		window->player->center->y += -window->player->pdx;
 		draw_player(window, window->player->p_color);
+			drawRay3D(window);
 	}
 }
 void		move_dot_left_arrow(t_window *window)
@@ -83,6 +85,7 @@ void		move_dot_left_arrow(t_window *window)
 		window->player->pdx = cos(window->player->pa)*30;
 		window->player->pdy = sin(window->player->pa)*30;
 		draw_player(window, window->player->p_color);
+			drawRay3D(window);
 	}
 }
 void		move_dot_right_arrow(t_window *window)
@@ -97,6 +100,7 @@ void		move_dot_right_arrow(t_window *window)
 		window->player->pdx = cos(window->player->pa)*30;
 		window->player->pdy = sin(window->player->pa)*30;
 		draw_player(window, window->player->p_color);
+			drawRay3D(window);
 	}
 }
 
@@ -109,6 +113,7 @@ void		move_dot_up(t_window *window)
 		window->player->center->x+=window->player->pdx;
 		window->player->center->y+=window->player->pdy;
 		draw_player(window, window->player->p_color);
+			drawRay3D(window);
 	}
 }
 
@@ -121,6 +126,7 @@ void		move_dot_down(t_window *window)
 		window->player->center->x-=window->player->pdx;
 		window->player->center->y-=window->player->pdy;
 		draw_player(window, window->player->p_color);
+			drawRay3D(window);
 	}
 }
 
@@ -207,17 +213,15 @@ void	draw_wall(t_window *window)
 
 	r = 0;
 	c = 0;
-	int	box_width;
-	int box_height;
-	box_width = window->width / window->column_count;
-	box_height = window->height/ window->row_count;
+	window->box_width = window->width / window->column_count;
+	window->box_height = window->height/ window->row_count;
 	while (r < window->row_count)
 	{
 		if (ft_strchr("NEWS 0", window->map[r][c]))
 			c++;
 		else if (window->map[r][c] == '1')
 		{
-			draw_box(window, r, c, box_width, box_height);
+			draw_box(window, r, c, window->box_width, window->box_height);
 			c++;
 		}
 		if (c == window->column_count )
@@ -228,7 +232,28 @@ void	draw_wall(t_window *window)
 	}
 
 }
-
+void	drawRay3D(t_window *window)
+{
+	int	r, mx, my, mp, delta_offset;
+	float rx, ry, ra, xo, yo;
+	ra = window->player->pa;
+	r = 0;
+	while (r < 1)
+	{
+		delta_offset = 0;
+		float aTan = -1/tan(ra);
+		r++;
+		printf("ra: %f\taTan: %f\n", ra,aTan);
+		if (ra > M_PI)
+		{
+			ry = window->player->center->y;
+			rx = (window->player->center->y-
+					window->player->center->y) * aTan
+					+window->player->center->x;
+			printf("rx: %f\try: %f\n", rx,ry);
+		}
+	}
+}
 int	main()
 {
 	t_window	*window;
@@ -243,6 +268,7 @@ int	main()
 	if (!init_player(window, 0x0000FF))
 		return (0);
 	draw_wall(window);
+	drawRay3D(window);
 	mlx_loop_hook(window->mlx, draw_grid, window);
 	//mlx_loop_hook(window->mlx, draw_player, window);
 	mlx_hook(window->win, 2, 1, press_key_for_dot, window);
