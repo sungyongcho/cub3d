@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 02:31:03 by sucho             #+#    #+#             */
-/*   Updated: 2020/08/21 16:03:55 by sucho            ###   ########.fr       */
+/*   Updated: 2020/08/21 21:45:30 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,7 +234,7 @@ void	draw_wall(t_window *window)
 }
 void	drawRay3D(t_window *window)
 {
-	int	r, mx, my, mp, delta_offset;
+	int	r, mx, my, mpx, mpy, delta_offset;
 	float rx, ry, ra, xo, yo;
 	ra = window->player->pa;
 	r = 0;
@@ -242,16 +242,33 @@ void	drawRay3D(t_window *window)
 	{
 		delta_offset = 0;
 		float aTan = -1/tan(ra);
-		r++;
 		printf("ra: %f\taTan: %f\n", ra * 180 / M_PI, aTan);
 		if (ra > M_PI)
 		{
-			ry = window->player->center->y;
-			rx = (window->player->center->y-
-					window->player->center->y) * aTan
-					+window->player->center->x;
-			printf("rx: %f\try: %f\n", rx,ry);
+			ry = window->player->center->y / window->box_height * window->box_height;
+			rx = (window->player->center->y - ry) * aTan + window->player->center->x;
+			yo = - window->box_height;
+			xo = -yo * aTan;
 		}
+		else if (ra < M_PI)
+		{
+			ry = window->player->center->y / window->box_height * window->box_height + window->box_height;
+			rx = (window->player->center->y - ry) * aTan + window->player->center->x;
+			yo = window->box_height;
+			xo = -yo * aTan;
+		}
+		else if (ra == 0 || ra == M_PI)
+		{
+			rx = window->player->center->x;
+			ry = window->player->center->y;
+		}
+
+		draw_ray_horiz(window, rx, ry, 0x00ccff);
+		printf("px: %d\tpy: %d\n", window->player->center->x,window->player->center->y);
+		printf("rx: %f\try: %f\n", rx,ry);
+		printf("xo: %f\tyo: %f\n", xo,yo);
+		printf("mx: %d\tmy: %d\n", mx,my);
+		r++;
 	}
 }
 int	main()

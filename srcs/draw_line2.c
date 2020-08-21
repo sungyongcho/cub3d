@@ -32,6 +32,26 @@ int		draw_player(t_window *window, int color)
 	return (1);
 }
 
+int		draw_ray_horiz(t_window *window, int rx, int ry, int color)
+{
+	t_point	*begin;
+	t_point	*end;
+
+	if (!(begin = (t_point *)malloc(sizeof(t_point))))
+		return (0);
+	if (!(end = (t_point *)malloc(sizeof(t_point))))
+		return (0);
+
+	begin->x = window->player->center->x;
+	begin->y = window->player->center->y;
+	end->x = rx;
+	end->y = ry;
+	draw_line_bres(window, begin, end, color);
+	free(begin);
+	free(end);
+	return (1);
+}
+
 int		draw_line_bres_low(t_window *window, t_point *begin, t_point *end, int color)
 {
 	int	dx;
