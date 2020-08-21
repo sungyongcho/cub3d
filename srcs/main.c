@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 02:31:03 by sucho             #+#    #+#             */
-/*   Updated: 2020/08/14 00:33:04 by sucho            ###   ########.fr       */
+/*   Updated: 2020/08/21 16:03:55 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void		move_dot_left_arrow(t_window *window)
 	&& (0 <=window->player->center->y && window->player->center->y <= window->height))
 	{
 		draw_player(window, 000000);
-		window->player->pa -= 0.1;
+		window->player->pa -= M_PI / 180 * 5;
 		if (window->player->pa < 0)
 			window->player->pa += 2 * M_PI;
 		window->player->pdx = cos(window->player->pa)*30;
@@ -94,7 +94,7 @@ void		move_dot_right_arrow(t_window *window)
 	&& (0 <=window->player->center->y && window->player->center->y <= window->height))
 	{
 		draw_player(window, 000000);
-		window->player->pa += 0.1;
+		window->player->pa += M_PI / 180 * 5;
 		if (window->player->pa > 2 * M_PI)
 			window->player->pa = 0;
 		window->player->pdx = cos(window->player->pa)*30;
@@ -243,7 +243,7 @@ void	drawRay3D(t_window *window)
 		delta_offset = 0;
 		float aTan = -1/tan(ra);
 		r++;
-		printf("ra: %f\taTan: %f\n", ra,aTan);
+		printf("ra: %f\taTan: %f\n", ra * 180 / M_PI, aTan);
 		if (ra > M_PI)
 		{
 			ry = window->player->center->y;

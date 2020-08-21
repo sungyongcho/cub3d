@@ -58,7 +58,7 @@ char				*ft_save_buffer(char *buffer, char *save)
 
 int					get_next_line(int fd, char **line)
 {
-	static char		*storage[OPEN_MAX];
+	static char		*storage[4096];
 	char			buffer[BUFFER_SIZE + 1];
 	int				result;
 
