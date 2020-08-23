@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 02:31:03 by sucho             #+#    #+#             */
-/*   Updated: 2020/08/21 21:45:30 by sucho            ###   ########.fr       */
+/*   Updated: 2020/08/23 21:18:07 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,40 +234,72 @@ void	draw_wall(t_window *window)
 }
 void	drawRay3D(t_window *window)
 {
-	int	r, mx, my, mpx, mpy, delta_offset;
-	float rx, ry, ra, xo, yo;
+	t_point ray;
+	int	r, mx, my, mp, hit;
+	float ra, rx, ry, xo, yo, aTan;
 	ra = window->player->pa;
 	r = 0;
 	while (r < 1)
 	{
-		delta_offset = 0;
-		float aTan = -1/tan(ra);
-		printf("ra: %f\taTan: %f\n", ra * 180 / M_PI, aTan);
-		if (ra > M_PI)
+		hit = 0;
+		aTan = -1 / tan(ra);
+		if (ra > M_PI && ((int) (ra / M_PI * 180)) != 180)
 		{
-			ry = window->player->center->y / window->box_height * window->box_height;
-			rx = (window->player->center->y - ry) * aTan + window->player->center->x;
+			ray.y = window->player->center->y / window->box_height * window->box_height;
+			ray.x = (window->player->center->y - ray.y) * aTan + window->player->center->x;
 			yo = - window->box_height;
 			xo = -yo * aTan;
 		}
-		else if (ra < M_PI)
+		else if (ra < M_PI && ((int) (ra / M_PI * 180)) != 0)
 		{
-			ry = window->player->center->y / window->box_height * window->box_height + window->box_height;
-			rx = (window->player->center->y - ry) * aTan + window->player->center->x;
+			ray.y = window->player->center->y / window->box_height * window->box_height + window->box_height;
+			ray.x = (window->player->center->y - ray.y) * aTan + window->player->center->x;
 			yo = window->box_height;
 			xo = -yo * aTan;
 		}
-		else if (ra == 0 || ra == M_PI)
+		else if ( ((int) (ra / M_PI * 180)) == 180)
 		{
-			rx = window->player->center->x;
-			ry = window->player->center->y;
+			printf("##########hello########\n");
+			ray.y = window->player->center->y;
+			ray.x = window->player->center->x / window->box_width * window->box_width;
+			yo = 0;
+			xo = -window->box_width;
 		}
-
-		draw_ray_horiz(window, rx, ry, 0x00ccff);
-		printf("px: %d\tpy: %d\n", window->player->center->x,window->player->center->y);
-		printf("rx: %f\try: %f\n", rx,ry);
-		printf("xo: %f\tyo: %f\n", xo,yo);
-		printf("mx: %d\tmy: %d\n", mx,my);
+		else if (((int) (ra / M_PI * 180)) == 0)
+		{
+			printf("##########bye########\n");
+			ray.y = window->player->center->y;
+			ray.x = window->player->center->x / window->box_width * window->box_width + window->box_width;
+			yo = 0;
+			xo = window->box_width;
+		}
+		while (!hit)
+		{
+			mx = (int)ray.x / window->box_width; my = (int)ray.y / window->box_height;
+			printf("########mx: %d\tmy: %d#######\n", mx,my);
+			if (window->map[my][mx] == '1')
+			{
+				printf("bitchmx: %d\tmy: %dbitch\n", mx,my);
+				hit = 1;
+				ray.y-=yo;
+				ray.x-=xo;
+				break;
+			}
+			else if (!(0 < mx && mx < window->row_count)
+					||	(!(0 < my && my < window->column_count)))
+			{
+				ray.y-=yo;
+				ray.x-=xo;
+				hit = 1;
+				break;
+			}
+			else
+			{
+				ray.y+=yo;
+				ray.x+=xo;
+			}
+		}
+		draw_ray_horiz(window, ray, 0x00ccff);
 		r++;
 	}
 }

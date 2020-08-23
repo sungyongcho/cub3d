@@ -1,0 +1,83 @@
+	delta_offset = 0;
+		float aTan = -1/tan(ra);
+		printf("ra: %f\taTan: %f\tpa:%f\n", ra, aTan,window->player->pa);
+		if ( ((int) (ra / M_PI * 180)) == 180)
+		{
+			printf("##########hello########\n");
+			ray.y = window->player->center->y;
+			ray.x = window->player->center->x / window->box_width * window->box_width;
+			yo = 0;
+			xo = -window->box_width;
+			while (delta_offset < window->row_count)
+			{
+				mx = (int)ray.x / window->box_width; my = (int)ray.y / window->box_height;
+				printf("########mx: %d\tmy: %d#######\n", mx,my);
+				if (window->map[my][mx] == '1'){
+					delta_offset = window->row_count;
+					ray.x-=xo;
+				}
+				else
+				{
+					ray.x+=xo;
+					ray.y+=yo;
+					delta_offset++;
+				}
+        	}
+        	draw_ray_horiz(window, ray, 0x00ccff);
+			return ;
+		}
+		else if (((int) (ra / M_PI * 180)) == 0)
+		{
+			printf("##########bye########\n");
+			ray.y = window->player->center->y;
+			ray.x = window->player->center->x / window->box_width * window->box_width + window->box_width;
+			yo = 0;
+			xo = window->box_width;
+			while (delta_offset < window->row_count)
+			{
+				mx = (int)ray.x / window->box_width; my = (int)ray.y / window->box_height;
+				printf("########mx: %d\tmy: %d#######\n", mx,my);
+				if (window->map[my][mx] == '1'){
+					delta_offset = window->row_count;
+				}
+				else
+				{
+					ray.x+=xo;
+					ray.y+=yo;
+					delta_offset++;
+				}
+        	}
+        	draw_ray_horiz(window, ray, 0x00ccff);
+			return ;
+		}
+		else if (ra > M_PI)
+        {
+            ray.y = window->player->center->y / window->box_height * window->box_height;
+            ray.x = (window->player->center->y - ray.y) * aTan + window->player->center->x;
+            yo = - window->box_height;
+            xo = -yo * aTan;
+        }
+        else if (ra < M_PI)
+        {
+            ray.y = window->player->center->y / window->box_height * window->box_height + window->box_height;
+            ray.x = (window->player->center->y - ray.y) * aTan + window->player->center->x;
+            yo = window->box_height;
+            xo = -yo * aTan;
+			while (delta_offset < window->row_count)
+			{
+				mx = (int)ray.x / window->box_width; my = (int)ray.y / window->box_height;
+				printf("########mx: %d\tmy: %d#######\n", mx,my);
+				if (window->map[my][mx] == '1'){
+					delta_offset = window->row_count;
+				}
+				else if (mx > 0 && my > 0)
+				{
+					ray.x+=xo;
+					ray.y+=yo;
+					delta_offset++;
+				}
+            printf("#########delta_offset:%d#######\n",delta_offset);
+        	}
+		draw_ray_horiz(window, ray, 0x00ccff);
+		return ;
+        }

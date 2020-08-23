@@ -32,7 +32,7 @@ int		draw_player(t_window *window, int color)
 	return (1);
 }
 
-int		draw_ray_horiz(t_window *window, int rx, int ry, int color)
+int		draw_ray_horiz(t_window *window, t_point ray, int color)
 {
 	t_point	*begin;
 	t_point	*end;
@@ -44,8 +44,8 @@ int		draw_ray_horiz(t_window *window, int rx, int ry, int color)
 
 	begin->x = window->player->center->x;
 	begin->y = window->player->center->y;
-	end->x = rx;
-	end->y = ry;
+	end->x = ray.x;
+	end->y = ray.y;
 	draw_line_bres(window, begin, end, color);
 	free(begin);
 	free(end);

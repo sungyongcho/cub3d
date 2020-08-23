@@ -6,13 +6,14 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 02:33:19 by sucho             #+#    #+#             */
-/*   Updated: 2020/08/21 21:36:19 by sucho            ###   ########.fr       */
+/*   Updated: 2020/08/23 13:45:57 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdio.h>
 #include <math.h>
+#include <float.h>
 #include <stdlib.h>
 #include <fcntl.h>
 #include "./get_next_line/get_next_line.h"
@@ -101,7 +102,7 @@ typedef struct	s_window
 }				t_window;
 
 int		draw_line_bres(t_window *window, t_point *begin, t_point *end, int color);
-int		draw_ray_horiz(t_window *window, int rx, int ry, int color);
+int		draw_ray_horiz(t_window *window, t_point ray, int color);
 int		draw_player(t_window *window, int color);
 void	map_read(t_window *window, char *path);
 void	map_check_player(t_window *window);
