@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 02:31:03 by sucho             #+#    #+#             */
-/*   Updated: 2020/08/23 21:18:07 by sucho            ###   ########.fr       */
+/*   Updated: 2020/08/30 00:20:46 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,12 +232,23 @@ void	draw_wall(t_window *window)
 	}
 
 }
+
+float	ray_dist(t_point *center, float ray_x, float ray_y)
+{
+	return (sqrt((center->x - ray_x) * (center->x - ray_x) + (center->y - ray_y) * (center->y - ray_y)));
+}
+
 void	drawRay3D(t_window *window)
 {
 	t_point ray;
+	t_point h_ray, v_ray;
 	int	r, mx, my, mp, hit;
-	float ra, rx, ry, xo, yo, aTan;
-	ra = window->player->pa;
+	float ra, rx, ry, xo, yo, aTan, distH, distV;
+	ra = window->player->pa - (30 * M_PI/180);
+	if (ra < 0)
+		ra += 2*M_PI;
+	if (ra > 2 *M_PI)
+		ra -= 2*M_PI;
 	r = 0;
 	while (r < 1)
 	{
@@ -276,33 +287,105 @@ void	drawRay3D(t_window *window)
 		while (!hit)
 		{
 			mx = (int)ray.x / window->box_width; my = (int)ray.y / window->box_height;
-			printf("########mx: %d\tmy: %d#######\n", mx,my);
-			if (window->map[my][mx] == '1')
+			mp = my * window->row_count + mx;
+			printf("$$$mx: %d###\t###my: %d###\t###mp: %d$$$\t\n", mx,my,mp);
+			if (0 < mp && mp < (window->row_count * window->column_count) && window->map[my][mx] == '1')
 			{
+				hit = 1;
+				ray.y-=yo;
+				ray.x-=xo;
+				h_ray.x = ray.x;
+				h_ray.y = ray.y;
+				distH = ray_dist(window->player->center, h_ray.x, h_ray.y);
 				printf("bitchmx: %d\tmy: %dbitch\n", mx,my);
-				hit = 1;
-				ray.y-=yo;
-				ray.x-=xo;
+				printf("bitchray_x: %d\tray_y: %dbitch\n", ray.x,ray.y);
 				break;
 			}
-			else if (!(0 < mx && mx < window->row_count)
-					||	(!(0 < my && my < window->column_count)))
-			{
-				ray.y-=yo;
-				ray.x-=xo;
-				hit = 1;
-				break;
-			}
-			else
+			else if ((0 <= mx && mx < window->column_count) && (0 <= my && my < window->row_count))
 			{
 				ray.y+=yo;
 				ray.x+=xo;
 			}
+			else
+			{
+				hit = 1;
+			}
 		}
+		hit = 0;
+		float nTan = -tan(ra);
+		if ((ra > M_PI/2) && (ra < 3 * M_PI / 2))
+		{
+			ray.x = window->player->center->x / window->box_width * window->box_width;
+			ray.y = (window->player->center->x - ray.x) * nTan + window->player->center->y;
+			xo = - window->box_width;
+			yo = -xo * nTan;
+		}
+		else if ((ra < M_PI/2) || (ra > 3 * M_PI / 2))
+		{
+			ray.x = window->player->center->x / window->box_width * window->box_width + window->box_width;
+			ray.y = (window->player->center->x - ray.x) * nTan + window->player->center->y;
+			xo = - window->box_width;
+			yo = -xo * nTan;
+		}
+		else if ( ((int) (ra / M_PI * 180)) == 0)
+		{
+			printf("##########hello########\n");
+			ray.y = window->player->center->y;
+			ray.x = window->player->center->x / window->box_width * window->box_width;
+			yo = 0;
+			xo = -window->box_width;
+		}
+		else if ( ((int) (ra / M_PI * 180)) == 180)
+		{
+			printf("##########hello########\n");
+			ray.y = window->player->center->y;
+			ray.x = window->player->center->x / window->box_width * window->box_width + window->box_width;
+			yo = 0;
+			xo = -window->box_width;
+		}
+		while (!hit)
+		{
+			mx = (int)ray.x / window->box_width; my = (int)ray.y / window->box_height;
+			mp = my * window->row_count + mx;
+			printf("###mx: %d###\t###my: %d###\t###mp: %d###\t\n", mx,my,mp);
+			if (0 < mp && mp < (window->row_count * window->column_count) && window->map[my][mx] == '1')
+			{
+				hit = 1;
+				v_ray.x = ray.x;
+				v_ray.y = ray.y;
+				distV = ray_dist(window->player->center, ray.x, ray.y);
+				printf("BITCHmx: %d\tmy: %dBITCH\n", mx,my);
+				printf("BITCHray.x: %d\tray.y: %dBITCH\n", ray.x,ray.y);
+				break;
+			}
+			else if (0 < mp && mp < (window->row_count * window->column_count))
+			{
+				ray.y+=yo;
+				ray.x+=xo;
+			}
+			else
+			{
+				hit = 1;
+			}
+		}
+
+		if (distV > distH)
+		{ray.x = v_ray.x; ray.y = v_ray.y;}
+		if (distV < distH)
+		{ray.x = h_ray.x; ray.y = h_ray.y;}
+		printf("distV:%f\tdistH:%f\n", distV,distH);
+		printf("ray.x:%d\tray.y:%d\n", ray.x, ray.y);
 		draw_ray_horiz(window, ray, 0x00ccff);
+		ra+=(M_PI/180);
+		if (ra < 0)
+			ra += 2*M_PI;
+		if (ra > 2 *M_PI)
+			ra -= 2*M_PI;
 		r++;
 	}
 }
+
+
 int	main()
 {
 	t_window	*window;
