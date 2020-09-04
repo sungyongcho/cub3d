@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/02 19:19:05 by sucho             #+#    #+#             */
-/*   Updated: 2020/09/04 16:56:01 by sucho            ###   ########.fr       */
+/*   Updated: 2020/09/04 22:25:00 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ static int	cub_check_image_path(t_cub *cub, char **cub_temp)
 	int	i;
 	i = 0;
 
-	if (!(ft_strchr(cub_temp[i++], "R")))
+	if (!(ft_strchr(cub_temp[i++], 'R')))
 		return (0);
-	if (!(ft_strchr(cub_temp[i++], "NO")))
+	if (!(ft_substr(cub_temp[i++], "NO")))
 		return (0);
 	if (!(ft_strchr(cub_temp[i++], "SO")))
 		return (0);
