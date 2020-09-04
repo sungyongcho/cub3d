@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/02 18:12:46 by sucho             #+#    #+#             */
-/*   Updated: 2020/09/04 00:19:39 by sucho            ###   ########.fr       */
+/*   Updated: 2020/09/05 02:21:29 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,35 +16,14 @@
 #define X_EVENT_KEY_EXIT	17
 #define mapWidth 24
 #define mapHeight 24
-void fresh(t_info *info)
-{
-	int x = 0;
-	while (x <= info->width)
-	{
-		int y = 0;
-		while (y <= info->height)
-		{
-			mlx_pixel_put(info->mlx, info->win, x, y, 0x000000);
-			y++;
-		}
-	}
-}
 
 static int		press_key(int key, t_info *info)
 {
 	printf("key: %d\n",key);
-	if (key == KEY_A)
-		move_player_left(info);
-	else if (key == KEY_D)
-		move_player_right(info);
-	else if (key == KEY_W)
-		move_player_forward(info);
-	else if (key == KEY_S)
-		move_player_backward(info);
-	else if (key == KEY_LEFT_ARROW)
-		move_player_left_arrow(info);
-	else if (key == KEY_RIGHT_ARROW)
-		move_player_right_arrow(info);
+	if (key == KEY_W || key == KEY_A || key == KEY_S || key == KEY_D)
+		move_player_wasd(info, key);
+	else if (key == KEY_LEFT_ARROW || key == KEY_RIGHT_ARROW)
+		move_player__arrow(info, key);
 	else if (key == KEY_ESC)
 		exit(0);
 	return (0);
