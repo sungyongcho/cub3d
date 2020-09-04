@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2020/09/04 15:37:48 by sucho            ###   ########.fr       */
+/*   Updated: 2020/09/04 23:59:45 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,8 @@ typedef struct	s_window
 
 typedef struct	s_cub
 {
+	int			res_w;
+	int			res_h;
 	char*		no_path;
 	char*		so_path;
 	char*		ea_path;
