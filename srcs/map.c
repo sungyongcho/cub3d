@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 07:03:47 by sucho             #+#    #+#             */
-/*   Updated: 2020/08/25 15:38:36 by sucho            ###   ########.fr       */
+/*   Updated: 2020/09/02 19:11:16 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,4 +165,12 @@ void	map_read(t_window *window, char *path)
 	int i =0;
 	while (window->map[i])
 		printf("%s\n",window->map[i++]);
+}
+
+void	info_map_read(t_info *info, char *path)
+{
+	char	*map_oneline;
+
+	map_oneline = read_map_oneline(path);
+	info->map = ft_split(map_oneline, '\n');
 }

@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 02:31:03 by sucho             #+#    #+#             */
-/*   Updated: 2020/08/30 00:20:46 by sucho            ###   ########.fr       */
+/*   Updated: 2020/09/02 19:08:45 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int			is_moving_to_wall(t_point *center)
 	return (1);
 }
 
-void		move_dot_right(t_window *window)
+static void		move_dot_right(t_window *window)
 {
 	if ((0 <=window->player->center->x && window->player->center->x <= window->width)
 	&& (0 <=window->player->center->y && window->player->center->y <= window->height))
@@ -61,7 +61,7 @@ void		move_dot_right(t_window *window)
 		drawRay3D(window);
 	}
 }
-void		move_dot_left(t_window *window)
+static void		move_dot_left(t_window *window)
 {
 	if ((0 <=window->player->center->x && window->player->center->x <= window->width)
 	&& (0 <=window->player->center->y && window->player->center->y <= window->height))
@@ -73,7 +73,7 @@ void		move_dot_left(t_window *window)
 			drawRay3D(window);
 	}
 }
-void		move_dot_left_arrow(t_window *window)
+static void		move_dot_left_arrow(t_window *window)
 {
 	if ((0 <=window->player->center->x && window->player->center->x <= window->width)
 	&& (0 <=window->player->center->y && window->player->center->y <= window->height))
@@ -88,7 +88,7 @@ void		move_dot_left_arrow(t_window *window)
 			drawRay3D(window);
 	}
 }
-void		move_dot_right_arrow(t_window *window)
+static void		move_dot_right_arrow(t_window *window)
 {
 	if ((0 <=window->player->center->x && window->player->center->x <= window->width)
 	&& (0 <=window->player->center->y && window->player->center->y <= window->height))
@@ -104,7 +104,7 @@ void		move_dot_right_arrow(t_window *window)
 	}
 }
 
-void		move_dot_up(t_window *window)
+static void		move_dot_up(t_window *window)
 {
 	if ((0 <=window->player->center->x && window->player->center->x <= window->width)
 	&& (0 <=window->player->center->y && window->player->center->y <= window->height))
@@ -117,7 +117,7 @@ void		move_dot_up(t_window *window)
 	}
 }
 
-void		move_dot_down(t_window *window)
+static void		move_dot_down(t_window *window)
 {
 	if ((0 <=window->player->center->x && window->player->center->x <= window->width)
 	&& (0 <=window->player->center->y && window->player->center->y <= window->height))
