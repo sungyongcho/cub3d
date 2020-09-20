@@ -6,50 +6,66 @@
 #    By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/02 18:03:49 by sucho             #+#    #+#              #
-#    Updated: 2020/09/02 20:38:36 by sucho            ###   ########.fr        #
+#    Updated: 2020/09/20 22:30:54 by sucho            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME			=	cub3d
-LIBFT			=	libft.a
-MINILIBX		=	libmlx.a
+NAME					=	cub3D
+LIBFT					=	libft.a
+MINILIBX				=	libmlx.a
 
-CC				=	clang
-CFLAGS			=	-Wall -Wextra -Werror -O2
+CC						=	gcc
+CFLAGS					=	-Wall -Wextra -Werror -g -fsanitize=address
 
-RM				=	rm -f
+RM						=	rm -f
 
-SRC_PATH		=	./srcs/
-INCLUDES_PATH	=	./includes/
-LIBFT_PATH		=	./includes/libft/
-MINILIBX_PATH	=	./includes/minilibx_mms_20200219/
+INCLUDES_PATH			=	./includes/
+LIBFT_PATH				=	./includes/libft/
+GET_NEXT_LINE_PATH		=	./includes/get_next_line/
+MINILIBX_MMS			=	./includes/minilibx_mms_20200219/
+MINILIBX_OPENGL			=	./includes/mlx/
+MINILIBX_LINUX			=	./includes/minilibx_linux/
 
-SRCS			=	untextured_raycast.c\
-					untextured_key_press.c\
-					map_info.c
+INCS					=	-I${INCLUDES_PATH} -I${LIBFT_PATH} -I${MINILIBX_MMS}
+INCLIB_OPENGL			=	-L${MINILIBX_OPENGL} -lmlx -framework OpenGL -framework Appkit \
+							-L${LIBFT_PATH} -lft
+INCLIB_MMS				=	-L${MINILIBX_MMS} -lmlx -framework Cocoa -framework Metal \
+							-framework MetalKit -framework QuartzCore -L${LIBFT_PATH} -lft
 
-LFLAGS			=	-framework Cocoa -framework Metal -framework MetalKit -framework QuartzCore
+SRCS					=	./includes/get_next_line/get_next_line.c \
+							./srcs/main_3.c \
+							./srcs/init.c \
+							./srcs/cub_parse.c \
+							./srcs/cub_parse_path.c \
+							./srcs/cub_parse_map.c \
+							./srcs/raycast_wall.c \
+							./srcs/raycast_sprite.c \
+							./srcs/key.c \
+							./srcs/bmp.c \
+							./srcs/map_validity.c
 
-OBJS			=	${SRC_PATH:.c=.o}
+LFLAGS					=	-framework Cocoa -framework Metal -framework MetalKit -framework QuartzCore
+
+OBJS					=	${SRCS:.c=.o}
 
 .c.o:
-				${CC} ${CFLAGS} -c $< -o ${<:.c=.o} -I{SRC_PATH}
+							${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
 
-all: 			$(NAME)
+all: 						$(NAME)
 
-${NAME}:		${OBJS}
-				make all -C ${LIBFT_PATH}
-				cp ${LIBFT_PATH}${LIBFT} ${MINILIBX}
-				$(CC) $(CFLAGS) $(INCS) -o $(NAME) $(OBJS) $(LFLAGS)
+${NAME}:					${OBJS}
+							make bonus -C ${LIBFT_PATH}
+							make -C ${MINILIBX_OPENGL}
+							$(CC) $(CFLAGS) ${INCS} ${INCLIB_OPENGL} -o $(NAME) $(OBJS)
 
 clean:
-				$(MAKE) -C $(LIBFT_PATH) clean
-				rm -f $(OBJS)
+							$(MAKE) -C $(LIBFT_PATH) clean
+							rm -f $(OBJS)
 
-fclean: 		clean
-				$(MAKE) -C $(LIBFT_PATH) fclean
-				rm -f $(NAME)
+fclean: 					clean
+							$(MAKE) -C $(LIBFT_PATH) fclean
+							rm -f $(NAME)
 
-re: 			fclean all
+re: 						fclean all
 
-.PHONY: 		test bonus all clean fclean re
+.PHONY: 					test bonus all clean fclean re

@@ -6,13 +6,13 @@
 #    By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/08 22:03:29 by sucho             #+#    #+#              #
-#    Updated: 2020/06/06 17:51:16 by sucho            ###   ########.fr        #
+#    Updated: 2020/09/15 19:51:45 by sucho            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	libft.a
 
-CC			=	clang
+CC			=	gcc
 CFLAGS		=	-Wall -Wextra -Werror
 
 RM			=	rm -f

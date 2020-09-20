@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 16:00:44 by sucho             #+#    #+#             */
-/*   Updated: 2020/05/09 02:35:10 by sucho            ###   ########.fr       */
+/*   Updated: 2020/09/08 15:32:40 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ size_t					ft_strlen(const char *s)
 	size_t				i;
 
 	i = 0;
-	while (*(s + i))
+	while (*s++)
 		i++;
 	return (i);
 }
@@ -49,32 +49,22 @@ char					*ft_substr(char const *s,
 	return (result);
 }
 
-char					*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char				*result;
-	unsigned int		i;
-	unsigned int		j;
+	int		i;
+	char	*tmp;
 
-	if (!s1 || !s2)
-		return (ft_strdup(""));
-	if (!(result = (char *)malloc(sizeof(char) *
-	(ft_strlen(s1) + ft_strlen(s2) + 1))))
-		return (NULL);
+	if (!(tmp = (char *)malloc(sizeof(char *) * (ft_strlen(s1) + ft_strlen(s2) + 1))))
+		return(0);
 	i = 0;
-	while (*(s1 + i) != '\0')
-	{
-		*(result + i) = *(s1 + i);
-		i++;
-	}
-	j = 0;
-	while (*(s2 + j) != '\0')
-	{
-		*(result + i + j) = *(s2 + j);
-		j++;
-	}
-	*(result + i + j) = '\0';
-	return (result);
+		while (*s1)
+			tmp[i++] = *s1++;
+		while (*s2)
+			tmp[i++] = *s2++;
+		tmp[i] = '\0';
+		return (tmp);
 }
+
 
 char					*ft_strdup(const char *s1)
 {

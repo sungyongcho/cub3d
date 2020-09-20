@@ -5,171 +5,95 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/02 19:19:05 by sucho             #+#    #+#             */
-/*   Updated: 2020/09/05 01:13:00 by sucho            ###   ########.fr       */
+/*   Created: 2020/09/04 15:27:36 by sucho             #+#    #+#             */
+/*   Updated: 2020/09/17 12:2 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
-static char 	*read_map_oneline(const char *path)
+#include <stdio.h>
+void	free_2d_char(char **ptr)
 {
-	char *map;
-	char *line;
-	int fd;
+	int i;
 
-	fd = open(path,O_RDONLY);
-	map = ft_strdup("");
-	while (get_next_line(fd, &line)> 0)
+	i = 0;
+	while(*(ptr + i))
+		free(*(ptr + i++));
+	free(ptr);
+}
+
+char		**cub_read_line(const char *path)
+{
+	int		fd;
+	char	*temp;
+	char	*store;
+	char	*line;
+	char	**output;
+
+	fd  = open(path,O_RDONLY);
+	store = ft_strdup("");
+	while(get_next_line(fd, &line))
 	{
-		map = ft_strjoin(map,line);
-		map = ft_strjoin(map,"\n");
+		temp = ft_strjoin(store, line);
+		free(store);
+		store = temp;
+		temp = ft_strjoin(store, "\n");
+		free(store);
+		store = temp;
 		free(line);
 	}
-	return (map);
+	free(line);
+	output = ft_split(store, '\n');
+	free(store);
+	return(output);
 }
 
-static void	cub_parse_res(t_cub *cub, char **temp)
+void			init_cub(t_cub *cub)
 {
-	int i;
-
-	char **color_temp;
-	if ((char)temp[0][0] == 'R')
-	{
-		i = 0;
-		cub->res_w = temp[1][i++] - '0';
-		while(temp[1][i])
-			cub->res_w = (cub->res_w * 10) + (temp[1][i++] - '0');
-		i = 0;
-		cub->res_h = temp[2][i++] - '0';
-		while(temp[2][i])
-			cub->res_h = (cub->res_h * 10) + (temp[2][i++] - '0');
-	}
-	else if ((char)temp[0][0] == 'S')
-		cub->sprite_path = temp[1];
-	else if ((char)temp[0][0] == 'F')
-	{
-		i = 0;
-		color_temp = ft_split(temp[1],',');
-		while (i < 3)
-			cub->floor_color = cub->floor_color * 256 + ft_atoi(color_temp[i++]);
-	}
-	else if ((char)temp[0][0] == 'C')
-	{	
-		i = 0;
-		color_temp = ft_split(temp[1],',');
-		while (i < 3)
-			cub->ceiling_color = cub->ceiling_color * 256 + ft_atoi(color_temp[i++]);
-	}
+	cub->res_w = 0;
+	cub->res_h = 0;
+	cub->floor_color = 0;
+	cub->ceiling_color = 0;
+	cub->map_row = 0;
+	cub->max_col = 0;
+	cub->sprite_count = 0;
 }
 
-static void	cub_parse_img(t_cub *cub, char **temp)
+void			cub_count_max_column(t_cub *cub)
 {
-	if ((char)temp[0][0] == 'N')
-		cub->no_path = temp[1];
-	else if ((char)temp[0][0] == 'E')
-		cub->ea_path = temp[1];
-	else if ((char)temp[0][0] == 'W')
-		cub->we_path = temp[1];
-	else if ((char)temp[0][0] == 'S')
-		cub->so_path = temp[1];
-	else
-	{
-		printf("error detected");
-		exit(0);
-	}
-}
+	int i = 0;
+	int max_col;
 
-static void	cub_parse_map(t_cub *cub, char **cub_temp)
-{
-	int i;
-	int j;
-
-	i = 0;
-	char **temp;
-	while (i < 8)
+	max_col = 0;
+	while (i < cub->map_row)
 	{
-		j = 0;
-		temp = ft_split(cub_temp[i], ' ');
-		if (ft_strlen(temp[j]) == 2)
+		if(max_col < (int)ft_strlen(cub->map[i]))
 		{
-			cub_parse_img(cub, temp);
-		}
-		else 
-		{
-			cub_parse_res(cub, temp);
+			max_col = (int)ft_strlen(cub->map[i]);
 		}
 		i++;
-	}	
+	}
+	cub->max_col = max_col;
 }
 
-static int	cub_check_image_path(t_cub *cub, char **cub_temp)
+void			cub_read_file(t_window *window, const char *path)
 {
-	// no, so, we, ea, s, f, c
-	int	i;
-	i = 0;
-	
-	if (!((char)cub_temp[i++][0] == 'R'))
-		return (0);
-	if (!((char)cub_temp[i][0] == 'N' && (char)cub_temp[i++][1] == 'O'))
-		return (0);
-	if (!((char)cub_temp[i][0] == 'S' && (char)cub_temp[i++][1] == 'O'))
-		return (0);
-	if (!((char)cub_temp[i][0] == 'W' && (char)cub_temp[i++][1] == 'E'))
-		return (0);
-	if (!((char)cub_temp[i][0] == 'E' && (char)cub_temp[i++][1] == 'A'))
-		return (0);
-	if (!((char)cub_temp[i++][0] == 'S'))
-		return (0);
-	if (!((char)cub_temp[i++][0] == 'F'))
-		return (0);
-	if (!((char)cub_temp[i++][0] == 'C'))
-		return (0);
-	return (1);
-}
-
-void			cub_parse(t_cub *cub, char *path)
-{
-	char	*cub_oneline;
 	char	**cub_temp;
-	int		line_count;
-	int		i;
-	cub_oneline = read_map_oneline(path);
-	cub_temp = ft_split(cub_oneline, '\n');
+	int		map_row_count;
 
-	if (!cub_check_image_path(cub, cub_temp))
-	{
-		printf("map parsing error\n");
-		exit(0);
-	}
-	line_count = 0;
-	while (cub_temp[line_count])
-		line_count++;
-	printf("line count: %d\n", line_count);
-	cub_parse_map(cub, cub_temp);
-	printf("%s\n",cub->no_path);
-	printf("%s\n",cub->so_path);
-	printf("%s\n",cub->ea_path);
-	printf("%s\n",cub->we_path);
-	printf("res: %d\t%d\n",cub->res_w, cub->res_h);
-	printf("color: %x\t%x\n",cub->floor_color, cub->ceiling_color);
-	line_count-=8;
-	printf("line count: %d\n", line_count);
-	i = 0;
-	if (!(cub->map = (char **)malloc(sizeof(char *) * (line_count+1))))
-		return ;
-	while (i < line_count)
-	{
-		cub->map[i] = ft_strdup(cub_temp[i+8]);
-		i++;
-	}
-	i = 0;
-	while (i < line_count)
-		printf("%s\n", cub->map[i++]);
-	printf("map_count = %d\n", i);
-	i = 0;
-	while (cub->map[i])
-		printf("%s\n", cub->map[i++]);
-	printf("cub->map count = %d\n", i);
-
+	init_cub(window->cub);
+	cub_temp = cub_read_line(path);
+	map_row_count = 0;
+	while(*(cub_temp + map_row_count))
+		map_row_count++;
+	map_row_count-=8;
+	window->cub->map_row = map_row_count;
+	cub_parse_top_eight(window->cub, cub_temp);
+	cub_parse_map(window->cub, (cub_temp + 8), map_row_count);
+	cub_count_max_column(window->cub);
+	cub_map_checkout(window);
+	cub_save_sprite(window);
+	check_map_validity(window, window->posX, window->posY);
+	free_2d_char(cub_temp);
+	cub_temp = NULL;
 }
