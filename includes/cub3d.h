@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2020/09/21 20:10:20 by sucho            ###   ########.fr       */
+/*   Updated: 2020/09/22 03:46:10 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@
 # include "./libft/libft.h"
 # define X_EVENT_KEY_PRESS 2
 # define X_EVENT_KEY_EXIT 17
-# define texWidth 64
-# define texHeight 64
 # define TEXTURE_KIND 5
 /*
 ** for getting inputs on both LINUX & MACOS
@@ -126,6 +124,7 @@ typedef struct	s_window
 	void		*win;
 	t_cub		*cub;
 	t_img		img;
+	t_pos		*texture_size;
 	t_sprite	*sprite;
 	double		*z_buffer;
 	int			*spriteOrder;
@@ -167,6 +166,21 @@ typedef struct	s_ray
 	int			draw_end;
 }				t_ray;
 
+typedef struct	s_ray_sprite
+{
+	double		sprite_x;
+	double		sprite_y;
+	double		inv_dir;
+	double		transform_x;
+	double		transform_y;
+	int			sprite_screen_x;
+	int			sprite_h;
+	int			sprite_w;
+	int			draw_start_y;
+	int			draw_end_y;
+	int			draw_start_x;
+	int			draw_end_x;
+}				t_ray_sprite;
 /*
 **	main.c
 */
@@ -228,16 +242,20 @@ void	cub_save_sprite(t_window *window);
 /*
 **	raycast_wall.c
 */
-void	floor_ceiling_to_buffer(t_window *window, int x);
 void	init_ray(int x, t_window *window, t_ray *ray);
 void	set_step_and_side(t_window *window, t_ray *ray);
 void	find_and_calc_wall(t_window *window, t_ray *ray);
 void	calculate_wall_texture(t_window *window, t_ray *ray);
 void	wall_to_buffer(t_window *window, int x);
 /*
-**	raycast_sprite.c
+**	raycast_rest.c
 */
+void	floor_ceiling_to_buffer(t_window *window, int x);
 void	sortSprites(t_window *window);
+void	init_ray_sprite(t_window *window, t_ray_sprite *rs, int i);
+void	draw_sprite_texture(t_window *window, t_ray_sprite *rs, int sprite_count);
+void	draw_sprite(t_window *window, int i);
+
 /*
 **	bmp.c
 */

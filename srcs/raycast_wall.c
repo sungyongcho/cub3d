@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 16:21:08 by sucho             #+#    #+#             */
-/*   Updated: 2020/09/21 03:47:17 by sucho            ###   ########.fr       */
+/*   Updated: 2020/09/22 03:45:40 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,10 @@ void	calculate_wall_texture(t_window *window, t_ray *ray)
 		ray->wall_x = window->posX + ray->perp_wall_dist * ray->ray_dir_x;
 	}
 	ray->wall_x -= floor(ray->wall_x);
-	ray->tex_x = (int)(ray->wall_x * (double)texWidth);
+	ray->tex_x = (int)(ray->wall_x * (double)window->texture_size[ray->tex_num].x);
 	if ((ray->side == 0 && ray->ray_dir_x > 0) \
 	 	|| (ray->side == 1 && ray->ray_dir_y < 0))
-		ray->tex_x = texWidth - ray->tex_x - 1;
+		ray->tex_x = window->texture_size[ray->tex_num].x - ray->tex_x - 1;
 }
 
 
@@ -122,14 +122,15 @@ void	wall_to_buffer(t_window *window, int x)
 	set_step_and_side(window, ray);
 	find_and_calc_wall(window, ray);
 	calculate_wall_texture(window,ray);
-	step = texHeight * 1.0 / ray->line_height;
+	step = window->texture_size[ray->tex_num].y * 1.0 / ray->line_height;
 	tex_pos = (ray->draw_start - window->cub->res_h / 2 + ray->line_height / 2) * step;
 	y = ray->draw_start;
 	while(y< ray->draw_end)
 	{
-		ray->tex_y = (int)tex_pos & (texHeight - 1);
+		ray->tex_y = (int)tex_pos & (window->texture_size[ray->tex_num].y - 1);
 		tex_pos += step;
-		color = window->texture[ray->tex_num][texHeight * ray->tex_y +ray->tex_x];
+		color = window->texture[ray->tex_num][
+			window->texture_size[ray->tex_num].y * ray->tex_y +ray->tex_x];
 		if(ray->side == 1)
 			color = (color >> 1) & 8355711;
 		window->buffer[y][x] = color;

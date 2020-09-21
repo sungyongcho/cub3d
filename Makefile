@@ -6,7 +6,7 @@
 #    By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/02 18:03:49 by sucho             #+#    #+#              #
-#    Updated: 2020/09/21 20:07:57 by sucho            ###   ########.fr        #
+#    Updated: 2020/09/22 04:36:16 by sucho            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,6 @@ MINILIBX				=	libmlx.a
 
 CC						=	gcc
 CFLAGS					=	-Wall -Wextra -Werror
-
 RM						=	rm -f
 
 INCLUDES_PATH			=	./includes/
@@ -44,8 +43,6 @@ SRCS					=	./includes/get_next_line/get_next_line.c \
 							./srcs/bmp.c \
 							./srcs/map_validity.c \
 							./srcs/error_process.c
-
-LFLAGS					=	-framework Cocoa -framework Metal -framework MetalKit -framework QuartzCore
 
 OBJS					=	${SRCS:.c=.o}
 

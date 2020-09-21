@@ -6,59 +6,62 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 14:54:22 by sucho             #+#    #+#             */
-/*   Updated: 2020/09/20 17:35:18 by sucho            ###   ########.fr       */
+/*   Updated: 2020/09/22 04:33:15 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void	load_image(t_window *info, int *texture, char *path, t_img *img)
+void	load_image(t_window *window, int texture_index, char *path, t_img *img)
 {
-	img->img = mlx_xpm_file_to_image(info->mlx, path, &img->width, &img->height);
+	img->img = mlx_xpm_file_to_image(window->mlx, path, &img->width, &img->height);
 	img->data = (int *)mlx_get_data_addr(img->img, &img->bpp, &img->size_l, &img->endian);
+	window->texture_size[texture_index].x = img->width;
+	window->texture_size[texture_index].y = img->height;
+	if (!(window->texture[texture_index] = (int *)malloc(sizeof(int) * (img->width * img->height))))
+			return ;
 	for (int y = 0; y < img->height; y++)
 	{
 		for (int x = 0; x < img->width; x++)
 		{
-			texture[img->width * y + x] = img->data[img->width * y + x];
+			window->texture[texture_index][img->width * y + x] = img->data[img->width * y + x];
 		}
 	}
-	mlx_destroy_image(info->mlx, img->img);
+	mlx_destroy_image(window->mlx, img->img);
 }
 
 void	load_texture(t_window *window)
 {
 	t_img	temp;
+	int		i;
 
-	load_image(window, window->texture[0], window->cub->no_path, &temp);
-	load_image(window, window->texture[1], window->cub->so_path, &temp);
-	load_image(window, window->texture[2], window->cub->we_path, &temp);
-	load_image(window, window->texture[3], window->cub->ea_path, &temp);
-	load_image(window, window->texture[4], window->cub->sprite_path, &temp);
+	if (!(window->texture = (int **)malloc(sizeof(int*) * (TEXTURE_KIND))))
+		return ;
+	if (!(window->texture_size = (t_pos *)malloc(sizeof(t_pos) * (TEXTURE_KIND))))
+		return ;
+	i = 0;
+	load_image(window, i++, window->cub->no_path, &temp);
+	load_image(window, i++, window->cub->so_path, &temp);
+	load_image(window, i++, window->cub->we_path, &temp);
+	load_image(window, i++, window->cub->ea_path, &temp);
+	load_image(window, i, window->cub->sprite_path, &temp);
 }
 void	init_window(t_window *window, char *path)
 {
+	int	i;
+
 	window->mlx = mlx_init();
 	if (!(window->cub = (t_cub *)malloc(sizeof(t_cub))))
 		return ;
 	cub_read_file(window, path);
 	window->win = mlx_new_window(window->mlx,
-							window->cub->res_w, window->cub->res_h, "mlx");
+							window->cub->res_w, window->cub->res_h, "cub3D");
 	if (!(window->buffer = (int **)malloc(sizeof(int *) * window->cub->res_h)))
 		return ;
-	int i = 0;
+	i = 0;
 	while (i < window->cub->res_h)
 	{
-		if (!(window->buffer[i] = (int *)malloc(sizeof(int ) * window->cub->res_w + 1)))
-			return ;
-		i++;
-	}
-	if (!(window->texture = (int **)malloc(sizeof(int*) * (TEXTURE_KIND))))
-		return ;
-	i = 0;
-	while (i < TEXTURE_KIND)
-	{
-		if (!(window->texture[i] = (int *)malloc(sizeof(int ) * (64 * 64))))
+		if (!(window->buffer[i] = (int *)malloc(sizeof(int) * window->cub->res_w + 1)))
 			return ;
 		i++;
 	}
