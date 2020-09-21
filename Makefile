@@ -6,7 +6,7 @@
 #    By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/02 18:03:49 by sucho             #+#    #+#              #
-#    Updated: 2020/09/20 22:30:54 by sucho            ###   ########.fr        #
+#    Updated: 2020/09/21 20:07:57 by sucho            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ LIBFT					=	libft.a
 MINILIBX				=	libmlx.a
 
 CC						=	gcc
-CFLAGS					=	-Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS					=	-Wall -Wextra -Werror
 
 RM						=	rm -f
 
@@ -23,7 +23,7 @@ INCLUDES_PATH			=	./includes/
 LIBFT_PATH				=	./includes/libft/
 GET_NEXT_LINE_PATH		=	./includes/get_next_line/
 MINILIBX_MMS			=	./includes/minilibx_mms_20200219/
-MINILIBX_OPENGL			=	./includes/mlx/
+MINILIBX_OPENGL			=	./includes/mlx_openGL/
 MINILIBX_LINUX			=	./includes/minilibx_linux/
 
 INCS					=	-I${INCLUDES_PATH} -I${LIBFT_PATH} -I${MINILIBX_MMS}
@@ -39,10 +39,11 @@ SRCS					=	./includes/get_next_line/get_next_line.c \
 							./srcs/cub_parse_path.c \
 							./srcs/cub_parse_map.c \
 							./srcs/raycast_wall.c \
-							./srcs/raycast_sprite.c \
+							./srcs/raycast_rest.c \
 							./srcs/key.c \
 							./srcs/bmp.c \
-							./srcs/map_validity.c
+							./srcs/map_validity.c \
+							./srcs/error_process.c
 
 LFLAGS					=	-framework Cocoa -framework Metal -framework MetalKit -framework QuartzCore
 
@@ -60,7 +61,8 @@ ${NAME}:					${OBJS}
 
 clean:
 							$(MAKE) -C $(LIBFT_PATH) clean
-							rm -f $(OBJS)
+							$(MAKE) -C $(MINILIBX_OPENGL) clean
+							rm -f $(OBJS) $(MINILIBX)
 
 fclean: 					clean
 							$(MAKE) -C $(LIBFT_PATH) fclean

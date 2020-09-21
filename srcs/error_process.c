@@ -1,20 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   error_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/03/05 16:26:36 by sucho             #+#    #+#             */
-/*   Updated: 2020/09/21 07:54:40 by sucho            ###   ########.fr       */
+/*   Created: 2020/09/21 05:50:12 by sucho             #+#    #+#             */
+/*   Updated: 2020/09/21 19:06:10 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/cub3d.h"
 
-int	ft_isalpha(int c)
+void	print_error_and_exit(char *msg)
 {
-	if (('A' <= c && c <= 'Z') || ('a' <= c && c <= 'z'))
-		return (1);
-	return (0);
+	int	message_length;
+
+	message_length = ft_strlen(msg);
+	write(1, "Error\n", 6);
+	write(1, &*msg, message_length);
+	exit(1);
+}
+
+void	check_valid_file(char *filepath)
+{
+	int	fd;
+
+	if ((fd  = open(filepath,O_RDONLY)) != 3)
+	{
+		perror(ft_strjoin("Error\n",filepath));
+		exit(0);
+	}
+	close(fd);
 }

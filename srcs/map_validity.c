@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 21:10:31 by sucho             #+#    #+#             */
-/*   Updated: 2020/09/21 03:48:36 by sucho            ###   ########.fr       */
+/*   Updated: 2020/09/21 19:1 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,17 +113,16 @@ void	check_map_validity(t_window *window, double posX, double posY)
 	i = 0;
 	while (i < (window->cub->map_row + 2) * (window->cub->max_col + 3))
 		visited[i++] = 0;
-	max_pad = create_padded_square(window);
-	i = 0;
-	while (i < window->cub->map_row + 2)
-		printf("#%s#\n",max_pad[i++]);
+	if (!(max_pad = create_padded_square(window)))
+		return ;
 	player_x = (int)(posX);
 	player_y = (int)(posY);
 	if (is_valid_map(window, max_pad, player_x, player_y, visited) == 0)
-	{
-		write(1,"Error.\n",7);
-		exit(0);
-	}
-	printf("%d\t%d\n", player_x, player_y);
+		print_error_and_exit("Invalid .cub file; Not a valid map");
+	free(visited);
+	i = 0;
+	while(i < window->cub->map_row + 2)
+		free(max_pad[i++]);
+	free(max_pad);
 }
 

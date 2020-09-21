@@ -30,7 +30,11 @@ char		**cub_read_line(const char *path)
 	char	*line;
 	char	**output;
 
-	fd  = open(path,O_RDONLY);
+	if ((fd  = open(path,O_RDONLY)) != 3)
+	{
+		perror(ft_strjoin("Error\n",path));
+		exit(1);
+	}
 	store = ft_strdup("");
 	while(get_next_line(fd, &line))
 	{
@@ -45,6 +49,7 @@ char		**cub_read_line(const char *path)
 	free(line);
 	output = ft_split(store, '\n');
 	free(store);
+	close(fd);
 	return(output);
 }
 
@@ -57,6 +62,12 @@ void			init_cub(t_cub *cub)
 	cub->map_row = 0;
 	cub->max_col = 0;
 	cub->sprite_count = 0;
+	cub->no_path = "";
+	cub->so_path = "";
+	cub->ea_path = "";
+	cub->we_path = "";
+	cub->sprite_path = "";
+	cub->player_check = 0;
 }
 
 void			cub_count_max_column(t_cub *cub)

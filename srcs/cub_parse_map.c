@@ -94,8 +94,13 @@ void	cub_map_checkout(t_window *window)
 		j = 0;
 		while (window->cub->map[i][j])
 		{
-			if (ft_strchr("NEWS", (char) window->cub->map[i][j]))
+			if (!(ft_strchr("NEWS 012", (char)window->cub->map[i][j])))
+				print_error_and_exit("Invalid .cub file; Map contains invalid character");
+			else if (ft_strchr("NEWS", (char) window->cub->map[i][j]))
 			{
+				if (window->cub->player_check == 1)
+					print_error_and_exit("Invalid .cub file; check player position");
+				window->cub->player_check = 1;
 				cub_set_player(window, (char) window->cub->map[i][j], i, j);
 				window->cub->map[i][j] = '0';
 			}
@@ -105,6 +110,8 @@ void	cub_map_checkout(t_window *window)
 		}
 		i++;
 	}
+	if (!window->cub->player_check)
+		print_error_and_exit("Invalid .cub file; check player position");
 }
 
 void	cub_save_sprite(t_window *window)

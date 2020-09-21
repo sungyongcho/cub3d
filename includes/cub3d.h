@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2020/09/21 02:38:35 by sucho            ###   ########.fr       */
+/*   Updated: 2020/09/21 20:10:20 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
 	#if TARGET_IPHONE_SIMULATOR
 	#elif TARGET_OS_IPHONE
 	#elif TARGET_OS_MAC
-		# include "./minilibx_mms_20200219/mlx.h"
+		# include "./mlx_openGL/mlx.h"
 		# define KEY_W 13
 		# define KEY_A 0
 		# define KEY_S 1
@@ -111,6 +111,7 @@ typedef struct	s_cub
 	char*		ea_path;
 	char*		we_path;
 	char*		sprite_path;
+	int			player_check;
 	int			floor_color;
 	int			ceiling_color;
 	char		**map;
@@ -206,9 +207,9 @@ char			**cub_read_line(const char *path);
 **	cub_parse_path.c
 */
 
-void	cub_parse_f_or_s(t_cub *cub, char **color, char which);
+void	cub_parse_f_or_c(t_cub *cub, char **color, char which);
 void	cub_parse_img(t_cub *cub, char **temp);
-void	cub_parse_rest(t_cub *cub, char **temp);
+void	cub_parse_rest(t_cub *cub, char **temp, int split_count);
 void	cub_parse_top_eight(t_cub *cub, char **cub_temp);
 
 /*
@@ -250,4 +251,12 @@ int		save_bmp(t_window *window);
 */
 void	check_map_validity(t_window *window, double posX, double posY);
 char	**create_padded_square(t_window *window);
+
+/*
+**	error_process.c
+*/
+
+void print_error_and_exit(char *msg);
+void check_valid_file(char *filepath);
+
 #endif
